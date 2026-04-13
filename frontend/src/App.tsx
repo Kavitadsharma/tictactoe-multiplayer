@@ -1,20 +1,32 @@
 import { useState } from "react";
-import Lobby from "./pages/Lobby";
-import Game from "./pages/Game";
+import Lobby from "./components/Lobby";
+import Game from "./components/Game";
 
-function App() {
-  const [matchId, setMatchId] = useState<string | null>(null);
+interface GameState {
+  matchId: string;
+  players: Record<string, string>;
+  turn: string;
+}
 
-  if (matchId) {
+export default function App() {
+  const [gameState, setGameState] = useState<GameState | null>(null);
+
+  if (gameState) {
     return (
       <Game
-        matchId={matchId}
-        onExit={() => setMatchId(null)}
+        matchId={gameState.matchId}
+        players={gameState.players}
+        initialTurn={gameState.turn}
+        onExit={() => setGameState(null)}
       />
     );
   }
 
-  return <Lobby onMatchFound={(id) => setMatchId(id)} />;
+  return (
+    <Lobby
+      onMatchFound={(matchId: string, players: Record<string, string>, turn: string) =>
+        setGameState({ matchId, players, turn })
+      }
+    />
+  );
 }
-
-export default App;
