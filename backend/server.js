@@ -6,8 +6,22 @@ const cors = require("cors");
 const app = express();
 
 // CORS configuration
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map(url => url.trim().replace(/\/$/, ""))
+  : ["http://localhost:3000"];
+
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps, curl, or server-to-server)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`[CORS Blocked] Origin "${origin}" is not allowed. Configured FRONTEND_URL is: "${process.env.FRONTEND_URL}". Allowed list:`, allowedOrigins);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST"],
   credentials: true
 };
