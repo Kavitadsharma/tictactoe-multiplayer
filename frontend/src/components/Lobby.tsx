@@ -21,7 +21,7 @@ export default function Lobby({ onMatchFound }: Props) {
       socket.off("waiting");
       socket.off("game_start");
     };
-  }, [socket]);
+  }, [socket, onMatchFound]);
 
   const findMatch = () => {
     if (!socket || searching) return;
