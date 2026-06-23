@@ -4,11 +4,19 @@ const { Server } = require("socket.io");
 const cors = require("cors");
 
 const app = express();
-app.use(cors());
+
+// CORS configuration
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "http://localhost:3000",
+  methods: ["GET", "POST"],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "*" }
+  cors: corsOptions
 });
 
 // Matchmaking queue
