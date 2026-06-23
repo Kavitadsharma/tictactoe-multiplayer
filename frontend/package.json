@@ -2,9 +2,8 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
-  "engines": {
-    "node": "18.x",
-    "npm": ">=9.0.0"
+   "engines": {
+    "node": "24.x"
   },
   "dependencies": {
     "@heroiclabs/nakama-js": "^2.8.0",
@@ -48,3 +47,4 @@
     ]
   }
 }
+
